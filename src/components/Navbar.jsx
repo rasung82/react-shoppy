@@ -1,9 +1,10 @@
 import {FiShoppingBag} from "react-icons/fi";
 import {Link} from "react-router-dom";
 import {BsFillPencilFill} from "react-icons/bs";
-import {isAdmin, login, logout, onUserStateChange} from "../api/firebase";
+import {login, logout, onUserStateChange} from "../api/firebase";
 import {useEffect, useState} from "react";
 import User from "./User";
+import Button from "./ui/Button";
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
@@ -32,8 +33,8 @@ export default function Navbar() {
         }
         { user && <User user={user} /> }
         { user
-          ? <button onClick={ ()=> logout().then(user => setUser(user))}>Logout</button>
-          : <button onClick={ ()=> login().then(user => setUser(user)) }>Login</button>
+          ? <Button text='logout' onClick={() => logout()} />
+          : <Button text='login' onClick={() => login()} />
         }
       </nav>
     </header>
