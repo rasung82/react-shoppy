@@ -10,6 +10,7 @@ import AllProducts from "./pages/AllProducts";
 import NewProduct from "./pages/NewProduct";
 import MyCarts from "./pages/MyCarts";
 import ProductDetail from "./pages/ProductDetail";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 // 라우터 설정
 const router = createBrowserRouter([
@@ -20,9 +21,26 @@ const router = createBrowserRouter([
     children: [
       { index: true, path: '/', element: <Home /> },
       { path: 'products', element: <AllProducts /> },
-      { path: 'products/new', element: <NewProduct /> },
-      { path: 'products/:id', element: <ProductDetail /> },
-      { path: 'carts', element: <MyCarts /> },
+      {
+        path: 'products/new',
+        element: (
+          <ProtectedRoute requireAdmin>
+            <NewProduct />
+          </ProtectedRoute>
+        )
+      },
+      {
+        path: 'products/:id',
+        element: <ProductDetail />
+      },
+      {
+        path: 'carts',
+        element: (
+          <ProtectedRoute>
+            <MyCarts />
+          </ProtectedRoute>
+        )
+      },
     ]
   }
 ])
