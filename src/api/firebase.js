@@ -1,5 +1,6 @@
+import { v4 as uuidv4 } from 'uuid';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, child, get } from 'firebase/database'
+import { getDatabase, ref, child, get, set } from 'firebase/database'
 import {
   getAuth,
   GithubAuthProvider,
@@ -57,7 +58,7 @@ export function onUserStateChange(callback) {
 }
 
 /**
- *
+ * Determine admin
  * @param uid
  * @returns {Promise<DataSnapshot>}
  */
@@ -72,5 +73,29 @@ async function adminUser(user) {
       return user;
     }).catch((error) => {
       console.error(error);
+    });
+}
+
+/**
+ *
+ * @param product
+ * @returns {Promise<void>}
+ */
+export async function addNewProduct(product, imageUrl) {
+  const uuid = uuidv4();
+  const db = getDatabase();
+  return set(ref(db, 'products/' + uuid), {
+    ...product,
+    id: uuid,
+    price: parseInt(product.price),
+    image: imageUrl,
+    options: product.options.split(',')
+  })
+    .then(() => {
+      return true;
+    })
+    .catch((error) => {
+      console.log('The write failed!')
+      return false;
     });
 }
